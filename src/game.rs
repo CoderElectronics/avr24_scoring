@@ -10,18 +10,18 @@ pub struct ScoringAction {
     #[derivative(Default(value = "String::from(\"N/A\")"))]
     pub description: String,
     pub name: String,
-    pub phase: i8,
+    pub phase: i32,
 
-    pub pointvalue: i8, // set to -1 to use point stages instead
+    pub pointvalue: i32, // set to -1 to use point stages instead
 
     #[derivative(Default(value = "10"))]
-    pub max_count: i8, // if using point stages this is useless
+    pub max_count: i32, // if using point stages this is useless
 
     #[derivative(Default(value = "0"))]
-    pub count: i8, // if using point stages this is the index of the pointstages vector
+    pub count: i32, // if using point stages this is the index of the pointstages vector
 
     #[derivative(Default(value = "Vec::new()"))]
-    pub pointstages: Vec<i8>,
+    pub pointstages: Vec<i32>,
 }
 
 pub fn initialize_default_actions() -> Vec<ScoringAction> {

@@ -1,4 +1,4 @@
-use egui::{vec2, CollapsingHeader, Slider};
+use egui::{CollapsingHeader, Slider};
 use itertools::Itertools;
 
 #[path = "game.rs"]
@@ -10,7 +10,7 @@ mod game;
 pub struct TemplateApp {
     #[serde(skip)]
     actions: Vec<game::ScoringAction>,
-    score: i8,
+    score: i32,
 }
 
 impl Default for TemplateApp {
@@ -113,7 +113,7 @@ impl eframe::App for TemplateApp {
                                             {
                                                 ui.add(Slider::new(
                                                     &mut act_ref.count,
-                                                    0..=act_ref.pointstages.len() as i8 - 1,
+                                                    0..=act_ref.pointstages.len() as i32 - 1,
                                                 ));
                                             } else {
                                                 if act_ref.max_count > 1 {
@@ -150,7 +150,7 @@ impl eframe::App for TemplateApp {
     }
 }
 
-fn score_label(ui: &mut egui::Ui, actions: &mut Vec<game::ScoringAction>, score: &mut i8) {
+fn score_label(ui: &mut egui::Ui, actions: &mut Vec<game::ScoringAction>, score: &mut i32) {
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 0.0;
         if ui.button("Calculate").clicked() {
@@ -169,7 +169,7 @@ fn author_text(ui: &mut egui::Ui) {
     });
 }
 
-fn scoring_processor(populated_game: Vec<game::ScoringAction>) -> i8 {
+fn scoring_processor(populated_game: Vec<game::ScoringAction>) -> i32 {
     return populated_game
         .iter()
         .map(|val| {
