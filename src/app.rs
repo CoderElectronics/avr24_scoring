@@ -19,20 +19,6 @@ pub struct TemplateApp {
     score: i32,
 }
 
-impl TemplateApp {
-    fn load_actions_from_json(&mut self, json_str: &str) -> Result<(), serde_json::Error> {
-        self.actions = serde_json::from_str(json_str)?;
-        self.actions_default = self.actions.clone();
-        Ok(())
-    }
-
-    fn load_actions_from_file(&mut self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
-        let file_content = std::fs::read_to_string(path)?;
-        self.load_actions_from_json(&file_content)?;
-        Ok(())
-    }
-}
-
 impl Default for TemplateApp {
     fn default() -> Self {
         let mut app = Self {
@@ -48,6 +34,19 @@ impl Default for TemplateApp {
 }
 
 impl TemplateApp {
+    // Game template loading functionality
+    fn load_actions_from_json(&mut self, json_str: &str) -> Result<(), serde_json::Error> {
+        self.actions = serde_json::from_str(json_str)?;
+        self.actions_default = self.actions.clone();
+        Ok(())
+    }
+
+    fn load_actions_from_file(&mut self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
+        let file_content = std::fs::read_to_string(path)?;
+        self.load_actions_from_json(&file_content)?;
+        Ok(())
+    }
+
     /// Called once before the first frame.
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // This is also where you can customize the look and feel of egui using
