@@ -1,7 +1,7 @@
 use derivative::Derivative;
 use uuid::Uuid;
 
-#[derive(Clone, Derivative)]
+#[derive(Clone, Derivative, serde::Deserialize, serde::Serialize)]
 #[derivative(Debug, Default)]
 pub struct ScoringAction {
     #[derivative(Default(value = "Uuid::new_v4().to_string()"))]

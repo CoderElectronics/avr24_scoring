@@ -1,5 +1,10 @@
-use egui::{CollapsingHeader, Slider};
+use egui::{
+    menu, widgets, Align, CentralPanel, CollapsingHeader, Context, Layout, RichText, ScrollArea,
+    Slider, TopBottomPanel, Ui, ViewportCommand,
+};
 use itertools::Itertools;
+use rfd;
+use serde_json;
 
 #[path = "game.rs"]
 mod game;
@@ -13,12 +18,29 @@ pub struct TemplateApp {
     score: i32,
 }
 
+impl TemplateApp {
+    fn load_actions_from_json(&mut self, json_str: &str) -> Result<(), serde_json::Error> {
+        self.actions = serde_json::from_str(json_str)?;
+        Ok(())
+    }
+
+    fn load_actions_from_file(&mut self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
+        let file_content = std::fs::read_to_string(path)?;
+        self.load_actions_from_json(&file_content)?;
+        Ok(())
+    }
+}
+
 impl Default for TemplateApp {
     fn default() -> Self {
-        Self {
-            actions: game::initialize_default_actions(),
+        let mut app = Self {
+            actions: vec![],
             score: 0,
+        };
+        if let Err(e) = app.load_actions_from_file("default.json") {
+            println!("Couldn't load default actions: {}", e);
         }
+        app
     }
 }
 
@@ -45,17 +67,30 @@ impl eframe::App for TemplateApp {
     }
 
     /// Called each time the UI needs repainting, which may be many times per second.
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
+    fn update(&mut self, ctx: &Context, _frame: &mut eframe::Frame) {
+        TopBottomPanel::top("top_panel").show(ctx, |ui| {
             // The top panel is often a good place for a menu bar:
 
-            egui::menu::bar(ui, |ui| {
+            menu::bar(ui, |ui| {
                 // NOTE: no File->Quit on web pages!
                 let is_web = cfg!(target_arch = "wasm32");
                 if !is_web {
                     ui.menu_button("File", |ui| {
+                        if ui.button("Load Game Configuration").clicked() {
+                            if let Some(path) = rfd::FileDialog::new()
+                                .add_filter("JSON", &["json"])
+                                .pick_file()
+                            {
+                                if let Err(e) = self.load_actions_from_file(path.to_str().unwrap())
+                                {
+                                    // Handle error (maybe show in UI)
+                                    println!("Error loading configuration: {}", e);
+                                }
+                            }
+                        }
+
                         if ui.button("Quit").clicked() {
-                            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                            ctx.send_viewport_cmd(ViewportCommand::Close);
                         }
                     });
                     ui.add_space(16.0);
@@ -66,15 +101,15 @@ impl eframe::App for TemplateApp {
                     self.score = 0;
                 }
 
-                egui::widgets::global_dark_light_mode_buttons(ui);
+                widgets::global_dark_light_mode_buttons(ui);
             });
         });
 
-        egui::CentralPanel::default().show(ctx, |ui| {
+        CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
             ui.heading("AVR 2024 Calculator");
 
-            egui::ScrollArea::vertical().show(ui, |ui| {
+            ScrollArea::vertical().show(ui, |ui| {
                 let tot_phases = self
                     .actions
                     .iter()
@@ -99,38 +134,32 @@ impl eframe::App for TemplateApp {
                                 ui.separator();
                                 ui.horizontal(|ui| {
                                     ui.vertical(|ui| {
-                                        ui.label(egui::RichText::new(&action.name).size(16.0));
-                                        ui.label(
-                                            egui::RichText::new(&action.description).size(12.0),
-                                        )
+                                        ui.label(RichText::new(&action.name).size(16.0));
+                                        ui.label(RichText::new(&action.description).size(12.0))
                                     });
 
-                                    ui.with_layout(
-                                        egui::Layout::right_to_left(egui::Align::LEFT),
-                                        |ui| {
-                                            if act_ref.pointvalue == -1
-                                                && !act_ref.pointstages.is_empty()
-                                            {
+                                    ui.with_layout(Layout::right_to_left(Align::LEFT), |ui| {
+                                        if act_ref.pointvalue == -1
+                                            && !act_ref.pointstages.is_empty()
+                                        {
+                                            ui.add(Slider::new(
+                                                &mut act_ref.count,
+                                                0..=act_ref.pointstages.len() as i32 - 1,
+                                            ));
+                                        } else {
+                                            if act_ref.max_count > 1 {
                                                 ui.add(Slider::new(
                                                     &mut act_ref.count,
-                                                    0..=act_ref.pointstages.len() as i32 - 1,
+                                                    0..=act_ref.max_count,
                                                 ));
                                             } else {
-                                                if act_ref.max_count > 1 {
-                                                    ui.add(Slider::new(
-                                                        &mut act_ref.count,
-                                                        0..=act_ref.max_count,
-                                                    ));
-                                                } else {
-                                                    let mut temp_bool = act_ref.count == 1;
-                                                    if ui.checkbox(&mut temp_bool, "").clicked() {
-                                                        act_ref.count =
-                                                            if temp_bool { 1 } else { 0 };
-                                                    }
+                                                let mut temp_bool = act_ref.count == 1;
+                                                if ui.checkbox(&mut temp_bool, "").clicked() {
+                                                    act_ref.count = if temp_bool { 1 } else { 0 };
                                                 }
                                             }
-                                        },
-                                    );
+                                        }
+                                    });
                                 });
                             }
 
@@ -140,8 +169,8 @@ impl eframe::App for TemplateApp {
             });
         });
 
-        egui::TopBottomPanel::bottom("my_panel").show(ctx, |ui| {
-            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+        TopBottomPanel::bottom("my_panel").show(ctx, |ui| {
+            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                 score_label(ui, &mut self.actions, &mut self.score);
                 ui.separator();
                 author_text(ui);
@@ -150,7 +179,7 @@ impl eframe::App for TemplateApp {
     }
 }
 
-fn score_label(ui: &mut egui::Ui, actions: &mut Vec<game::ScoringAction>, score: &mut i32) {
+fn score_label(ui: &mut Ui, actions: &mut Vec<game::ScoringAction>, score: &mut i32) {
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 0.0;
         if ui.button("Calculate").clicked() {
@@ -162,7 +191,7 @@ fn score_label(ui: &mut egui::Ui, actions: &mut Vec<game::ScoringAction>, score:
     });
 }
 
-fn author_text(ui: &mut egui::Ui) {
+fn author_text(ui: &mut Ui) {
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 0.0;
         ui.label("By Ari from Team Daedalus 76122A");

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "railway_action1",
+    "name": "Identify IR Beams",
+    "description": "The DEXI Drone identifies IR beams around the railway to locate damaged areas.",
+    "phase": 1,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "railway_action2",
+    "name": "Recognize April Tags",
+    "description": "The DEXI Drone recognizes April Tags to identify which colored Conex Tool Box is needed.",
+    "phase": 1,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "railway_action3",
+    "name": "Sphero Technician Travels",
+    "description": "Sphero Technicians travel from the Tech Center to the Container Yard.",
+    "phase": 1,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 3
+  },
+  {
+    "id": "railway_action4",
+    "name": "RVR Loader Autonomy",
+    "description": "RVR Loader drives autonomously from Tech Center to Container Yard using color square navigation.",
+    "phase": 1,
+    "pointvalue": 8,
+    "pointstages": [2, 4, 6, 8],
+    "count": 0,
+    "max_count": 1
+  },
+  {
+    "id": "railway_action5",
+    "name": "Sphero Boarding and Exiting",
+    "description": "Sphero Technicians board and exit the Conex Tool Boxes.",
+    "phase": 1,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 3
+  },
+  {
+    "id": "railway_action6",
+    "name": "Deliver Conex Tool Box to Railway",
+    "description": "The AVR Drone delivers Conex Tool Boxes to railway parking spots.",
+    "phase": 1,
+    "pointvalue": 5,
+    "pointstages": [3, 5],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "railway_action7",
+    "name": "Activate Repair Switch Buttons",
+    "description": "Sphero Technicians activate repair switch buttons to repair the railway.",
+    "phase": 1,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 6
+  },
+  {
+    "id": "railway_action8",
+    "name": "Activate Train Start Button",
+    "description": "A Sphero Technician activates the red switch button to start the train.",
+    "phase": 1,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 1
+  },
+  {
+    "id": "bridge_action1",
+    "name": "Identify IR Beams",
+    "description": "The DEXI Drone identifies IR beams along the bridge to locate cracked areas.",
+    "phase": 2,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "bridge_action2",
+    "name": "Recognize April Tags",
+    "description": "The DEXI Drone recognizes April Tags to identify which colored Conex Tool Box is needed.",
+    "phase": 2,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "bridge_action3",
+    "name": "Sphero Boarding and Exiting",
+    "description": "Sphero Technicians board and exit the Conex Tool Boxes.",
+    "phase": 2,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 3
+  },
+  {
+    "id": "bridge_action4",
+    "name": "Deliver Conex Tool Box to Bridge",
+    "description": "The AVR Drone delivers Conex Tool Boxes to bridge parking spots.",
+    "phase": 2,
+    "pointvalue": 5,
+    "pointstages": [3, 5],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "bridge_action5",
+    "name": "Travel to Work Space",
+    "description": "Sphero Technicians travel to the work space adjacent to the identified cracked areas.",
+    "phase": 2,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 3
+  },
+  {
+    "id": "bridge_action6",
+    "name": "Laser Weld Cracked Areas",
+    "description": "The DEXI Drone activates the laser to weld cracks, requiring 5 laser hits per area.",
+    "phase": 2,
+    "pointvalue": 10,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "bridge_action7",
+    "name": "Return to Container Yard",
+    "description": "Sphero Technicians return to the container yard after completing tasks.",
+    "phase": 2,
+    "pointvalue": 3,
+    "pointstages": [1, 3],
+    "count": 0,
+    "max_count": 3
+  },
+  {
+    "id": "power_action1",
+    "name": "Identify Hot Spots",
+    "description": "The AVR Drone identifies hot spots on the power pole transformers using a thermal camera.",
+    "phase": 3,
+    "pointvalue": 10,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "power_action2",
+    "name": "Recognize April Tags",
+    "description": "The DEXI Drone recognizes April Tags to determine which colored Conex Tool Box is needed.",
+    "phase": 3,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "power_action3",
+    "name": "Deliver Conex Tool Box to Power Pole",
+    "description": "The RVR Loader delivers Conex Tool Boxes to the identified power pole parking spots.",
+    "phase": 3,
+    "pointvalue": 5,
+    "pointstages": [3, 5],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "power_action4",
+    "name": "Reset Paddle Switch",
+    "description": "Sphero Technicians reset the paddle switch to repair the transformers.",
+    "phase": 3,
+    "pointvalue": 2,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 2
+  },
+  {
+    "id": "bonus_action1",
+    "name": "Park RVR Loader",
+    "description": "The RVR Loader returns to the starting position.",
+    "phase": 4,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 1
+  },
+  {
+    "id": "bonus_action2",
+    "name": "Park Sphero Technicians",
+    "description": "Sphero Technicians return to the tech center building.",
+    "phase": 4,
+    "pointvalue": 1,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 3
+  },
+  {
+    "id": "bonus_action3",
+    "name": "Park DEXI Drone",
+    "description": "The DEXI Drone lands at the designated helipad.",
+    "phase": 4,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 1
+  },
+  {
+    "id": "bonus_action4",
+    "name": "Park AVR Drone",
+    "description": "The AVR Drone lands at the designated helipad.",
+    "phase": 4,
+    "pointvalue": 3,
+    "pointstages": [],
+    "count": 0,
+    "max_count": 1
+  },
+  {
+    "id": "bonus_action5",
+    "name": "Return Conex Tool Boxes",
+    "description": "Conex Tool Boxes are returned to the container yard.",
+    "phase": 4,
+    "pointvalue": 2,
+    "pointstages": [1, 3, 5, 7, 20],
+    "count": 0,
+    "max_count": 6
+  }
+]
