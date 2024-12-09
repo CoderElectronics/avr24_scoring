@@ -15,12 +15,14 @@ mod game;
 pub struct TemplateApp {
     #[serde(skip)]
     actions: Vec<game::ScoringAction>,
+    actions_default: Vec<game::ScoringAction>,
     score: i32,
 }
 
 impl TemplateApp {
     fn load_actions_from_json(&mut self, json_str: &str) -> Result<(), serde_json::Error> {
         self.actions = serde_json::from_str(json_str)?;
+        self.actions_default = self.actions.clone();
         Ok(())
     }
 
@@ -35,6 +37,7 @@ impl Default for TemplateApp {
     fn default() -> Self {
         let mut app = Self {
             actions: vec![],
+            actions_default: vec![],
             score: 0,
         };
         if let Err(e) = app.load_actions_from_file("default.json") {
@@ -97,7 +100,7 @@ impl eframe::App for TemplateApp {
                 }
 
                 if ui.button("Reset Actions").clicked() {
-                    self.actions = game::initialize_default_actions();
+                    self.actions = self.actions_default.clone();
                     self.score = 0;
                 }
 
